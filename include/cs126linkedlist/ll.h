@@ -16,8 +16,8 @@ template <typename ElementType>
 class LinkedList {
 
   struct Node {
-    struct Node* nextItem;
-    struct Node* previousItem;
+    struct Node *nextItem;
+    struct Node *previousItem;
     ElementType element;
   };
 

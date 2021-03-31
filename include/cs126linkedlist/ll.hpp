@@ -10,50 +10,76 @@ namespace cs126linkedlist {
 
 template <typename ElementType>
 LinkedList<ElementType>::LinkedList() {
-  head->element = nullptr;
+  head->element = NULL;
   head->nextItem = nullptr;
   head->previousItem = nullptr;
 }
 
 template <typename ElementType>
 LinkedList<ElementType>::LinkedList(const std::vector<ElementType>& values) {
-  Node *last_node = head;
+  Node *previous = head;
   head->previousItem = nullptr;
   head->element = values.at(0);
   if (values.size() <= 1) {
     head->nextItem = nullptr;
   } else {
     for (size_t i = 1; i < values.size(); i++) {
-      Node* current_node = new Node();
-      last_node->nextItem = current_node;
+      Node *current_node = new Node();
+      previous->nextItem = current_node;
       current_node->element = values.at(i);
-      current_node->previousItem = last_node;
+      current_node->previousItem = previous;
       if (i + 1 == values.size()) {
         current_node->nextItem = nullptr;
       }
-      last_node = current_node;
+      previous = current_node;
     }
   }
 }
 
 // Copy constructor
 template <typename ElementType>
-LinkedList<ElementType>::LinkedList(const LinkedList<ElementType>& source) {}
+LinkedList<ElementType>::LinkedList(const LinkedList<ElementType>& source) {
+  Node *previous = head;
+  head->previousItem = nullptr;
+  head->element = source.head->element;
+  if (source.size() <= 1) {
+    head->nextItem = nullptr;
+  } else {
+    Node *source_node = source.head->nextItem;
+    for (size_t i = 1; i < source.size(); i++) {
+      Node* current_node = new Node();
+      previous->nextItem = current_node;
+      current_node->element = source_node->element;
+      current_node->previousItem = previous;
+      previous = current_node;
+      if (i + 1 == source.size()) {
+        current_node->nextItem = nullptr;
+      }
+      source_node = source_node->nextItem;
+      previous = current_node;
+
+    }
+  }
+}
 
 // Move constructor
 template <typename ElementType>
 LinkedList<ElementType>::LinkedList(LinkedList<ElementType>&& source) noexcept {
-
+  head = source.head;
+  source.head = nullptr;
 }
 
 // Destructor
 template <typename ElementType>
-LinkedList<ElementType>::~LinkedList() {}
+LinkedList<ElementType>::~LinkedList() {
+  clear();
+}
 
 // Copy assignment operator
 template <typename ElementType>
 LinkedList<ElementType>& LinkedList<ElementType>::operator=(
-    const LinkedList<ElementType>& source) {}
+    const LinkedList<ElementType>& source) {
+}
 
 // Move assignment operator
 template <typename ElementType>
@@ -91,9 +117,11 @@ size_t LinkedList<ElementType>::size_helper(Node *node) const{
 template <typename ElementType>
 size_t LinkedList<ElementType>::size() const {
   if (head->nextItem == nullptr) {
+    if (head->element != NULL) {
+      return 1;
+    }
     return 0;
   }
-  std::cout << head->nextItem->element;
   return 1 + size_helper(head->nextItem);
 }
 

@@ -13,17 +13,34 @@ using cs126linkedlist::LinkedList;
 // in the "Test Cases and Sections" file.
 
 TEST_CASE("Constructors") {
-  LinkedList<int> *list;
-  SECTION("Default Constructor") {
+  const std::vector<int> &values = {1, 2, 3, 4, 5};
 
+  SECTION("Default Constructor") {
+    auto *list = new LinkedList<int>();
+    REQUIRE(list->size() == 0);
   }
 
   SECTION("Constructor using vector") {
-    const std::vector<int> &values = {1, 2, 3, 4, 5};
-    list = new LinkedList<int>(values);
-    REQUIRE(list->size() == 5);  }
-}
-/*
+    auto *list = new LinkedList<int>(values);
+    REQUIRE(list->size() == 5);
+    REQUIRE(list->size() != 7);
+  }
+
+  SECTION("Constructor using another list") {
+    const auto *source = new LinkedList<int>(values);
+    auto list(source);
+    REQUIRE(list->size() == 5);
+    REQUIRE(source->size() == 5);
+  }
+
+  SECTION("Move constructor") {
+    const auto source = new LinkedList<int>(values);
+    REQUIRE(source->size() == 5);
+    LinkedList<int> list(std::move(*source));
+    REQUIRE(list.size() == 5);
+  }
+
+}/*
 TEST_CASE("Push Back", "[constructor][push_back][size][empty]") {
   LinkedList<int> list;
 
