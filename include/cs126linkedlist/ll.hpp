@@ -6,15 +6,35 @@
 #include <utility>
 #include <vector>
 
-// TODO(you): Implement these methods.
-
 namespace cs126linkedlist {
 
 template <typename ElementType>
-LinkedList<ElementType>::LinkedList() {}
+LinkedList<ElementType>::LinkedList() {
+  head->element = nullptr;
+  head->nextItem = nullptr;
+  head->previousItem = nullptr;
+}
 
 template <typename ElementType>
-LinkedList<ElementType>::LinkedList(const std::vector<ElementType>& values) {}
+LinkedList<ElementType>::LinkedList(const std::vector<ElementType>& values) {
+  Node *last_node = head;
+  head->previousItem = nullptr;
+  head->element = values.at(0);
+  if (values.size() <= 1) {
+    head->nextItem = nullptr;
+  } else {
+    for (size_t i = 1; i < values.size(); i++) {
+      Node* current_node = new Node();
+      last_node->nextItem = current_node;
+      current_node->element = values.at(i);
+      current_node->previousItem = last_node;
+      if (i + 1 == values.size()) {
+        current_node->nextItem = nullptr;
+      }
+      last_node = current_node;
+    }
+  }
+}
 
 // Copy constructor
 template <typename ElementType>
@@ -53,19 +73,37 @@ template <typename ElementType>
 ElementType LinkedList<ElementType>::back() const {}
 
 template <typename ElementType>
-void LinkedList<ElementType>::pop_front() {}
+void LinkedList<ElementType>::pop_front() {
+
+}
 
 template <typename ElementType>
 void LinkedList<ElementType>::pop_back() {}
 
 template <typename ElementType>
-size_t LinkedList<ElementType>::size() const {}
+size_t LinkedList<ElementType>::size_helper(Node *node) const{
+  if (node->nextItem == nullptr) {
+    return 1;
+  }
+  return 1 + size_helper(node->nextItem);
+}
+
+template <typename ElementType>
+size_t LinkedList<ElementType>::size() const {
+  if (head->nextItem == nullptr) {
+    return 0;
+  }
+  std::cout << head->nextItem->element;
+  return 1 + size_helper(head->nextItem);
+}
 
 template <typename ElementType>
 bool LinkedList<ElementType>::empty() const {}
 
 template <typename ElementType>
-void LinkedList<ElementType>::clear() {}
+void LinkedList<ElementType>::clear() {
+
+}
 
 template <typename ElementType>
 std::ostream& operator<<(std::ostream& os,

@@ -11,6 +11,19 @@ using cs126linkedlist::LinkedList;
 // Read more on SECTIONs here:
 // `https://github.com/catchorg/Catch2/tree/master/docs`
 // in the "Test Cases and Sections" file.
+
+TEST_CASE("Constructors") {
+  LinkedList<int> *list;
+  SECTION("Default Constructor") {
+
+  }
+
+  SECTION("Constructor using vector") {
+    const std::vector<int> &values = {1, 2, 3, 4, 5};
+    list = new LinkedList<int>(values);
+    REQUIRE(list->size() == 5);  }
+}
+/*
 TEST_CASE("Push Back", "[constructor][push_back][size][empty]") {
   LinkedList<int> list;
 
@@ -28,5 +41,4 @@ TEST_CASE("Push Back", "[constructor][push_back][size][empty]") {
     REQUIRE(list.size() == 2);
   }
 }
-
-// TODO(you): Add more tests below.
+*/
