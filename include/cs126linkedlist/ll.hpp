@@ -110,6 +110,7 @@ LinkedList<ElementType>& LinkedList<ElementType>::operator=(
 template <typename ElementType>
 LinkedList<ElementType>& LinkedList<ElementType>::operator=(
     LinkedList<ElementType>&& source) noexcept {
+  delete head;
   head = source.head;
   source.head = nullptr;
   return *this;
